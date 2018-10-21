@@ -39,6 +39,13 @@ public class Main4Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
 
+        ((Button) findViewById(R.id.button4)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Main4Activity.this, Main3Activity.class);
+                startActivity(i);
+            }
+        });
 
         ((Button) findViewById(R.id.button2)).setOnClickListener(new View.OnClickListener() {
             @Override

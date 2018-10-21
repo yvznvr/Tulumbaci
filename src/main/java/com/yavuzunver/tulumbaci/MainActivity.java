@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     LocationManager locationManager;
     String provider;
     private String[] ulkeler =
-            {"Liste1", "Liste2"};
+            {"37.59485-45.6464","38.0034-45.7565","40.4347-47.7754","42.4545-48.7964"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

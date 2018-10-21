@@ -127,7 +127,7 @@ public class Main2Activity extends AppCompatActivity implements CameraBridgeView
 
         Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2GRAY);
         Imgproc.blur(source, source, new Size(5., 5.));
-//        Imgproc.Canny(source, source, 100, 20);
+        Imgproc.Canny(source, source, 100, 20);
 
 
         return source;
