@@ -12,6 +12,10 @@ import android.view.View;
 import android.net.Uri;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +31,8 @@ public class Main4Activity extends AppCompatActivity {
     Button btnHit;
     TextView txtJson;
     ProgressDialog pd;
+    StringBuffer buffer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +43,28 @@ public class Main4Activity extends AppCompatActivity {
         ((Button) findViewById(R.id.button2)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
+//                Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(mapIntent);
+//                }
+
+
+
+                try {
+                    JSONArray jsonArray = new JSONArray(buffer.toString());
+                    int b = jsonArray.length();
+                    JSONObject obj1 = jsonArray.getJSONObject(1);
+                    String a = obj1.getString("latitude");
+
+                    ((TextView)findViewById(R.id.fetcheddata)).setText(a);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
 
             }
         });
@@ -90,7 +112,7 @@ public class Main4Activity extends AppCompatActivity {
 
                 reader = new BufferedReader(new InputStreamReader(stream));
 
-                StringBuffer buffer = new StringBuffer();
+                buffer = new StringBuffer();
                 String line = "";
 
                 while ((line = reader.readLine()) != null) {
