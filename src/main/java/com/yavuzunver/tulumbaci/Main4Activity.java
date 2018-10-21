@@ -37,15 +37,12 @@ public class Main4Activity extends AppCompatActivity {
         ((Button) findViewById(R.id.button2)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }
 
+                Intent i = new Intent(Main4Activity.this, Main3Activity.class);
+                startActivity(i);
             }
         });
+
 
 
         btnHit = (Button) findViewById(R.id.button4);
