@@ -28,7 +28,7 @@ public class Main4Activity extends AppCompatActivity {
 
 
 
-    Button btnHit;
+
     TextView txtJson;
     ProgressDialog pd;
     StringBuffer buffer;
@@ -45,48 +45,36 @@ public class Main4Activity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                Intent i = new Intent(Main4Activity.this, Main3Activity.class);
-                startActivity(i);
-
-//                Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                mapIntent.setPackage("com.google.android.apps.maps");
-//                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-//                    startActivity(mapIntent);
-//                }
-
-
-
                 try {
-                    JSONArray jsonArray = new JSONArray(buffer.toString());
-                    int b = jsonArray.length();
-                    JSONObject obj1 = jsonArray.getJSONObject(1);
-                    String a = obj1.getString("latitude");
+                    JSONObject jsonObject = new JSONObject(buffer.toString());
 
-                    ((TextView)findViewById(R.id.fetcheddata)).setText(a);
+                    String a = jsonObject.getString("latitude");
+                    String b = jsonObject.getString("longitude");
+                    String geo="geo:"+a+","+b;
 
+
+                    Uri gmmIntentUri = Uri.parse(geo);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(mapIntent);
+                        }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
-
             }
         });
 
 
 
-        btnHit = (Button) findViewById(R.id.button4);
+
         txtJson = (TextView) findViewById(R.id.fetcheddata);
 
-       btnHit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new JsonTask().execute("http://192.168.19.116:8000/api/fire/");
 
-            }
-        });
+        new JsonTask().execute("http://192.168.19.116:8000/api/fire/2");
+
 
 
 

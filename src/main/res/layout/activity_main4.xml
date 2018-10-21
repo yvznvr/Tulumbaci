@@ -27,10 +27,14 @@
         android:text="Button" />
 
     <ScrollView
-        android:layout_width="243dp"
-        android:layout_height="181dp"
+        android:layout_width="360dp"
+        android:layout_height="177dp"
         android:layout_below="@id/button2"
-        android:layout_marginTop="5dp">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="76dp">
 
         <TextView
             android:id="@+id/fetcheddata"
@@ -43,15 +47,6 @@
 
             />
     </ScrollView>
-    <VideoView
-        android:id="@+id/videoView2"
-        android:layout_width="wrap_content"
-        android:layout_height="228dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="4dp" />
-
 
 
 </RelativeLayout>
