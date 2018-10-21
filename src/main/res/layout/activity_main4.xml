@@ -12,9 +12,37 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="26dp"
         android:text="Map" />
 
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginLeft="33dp"
+        android:text="Button" />
+
+    <ScrollView
+        android:layout_width="243dp"
+        android:layout_height="181dp"
+        android:layout_below="@id/button2"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/fetcheddata"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/button2"
+            android:hint="Text here"
+            android:padding="5dp"
+            android:textSize="24sp"
+
+            />
+    </ScrollView>
     <VideoView
         android:id="@+id/videoView2"
         android:layout_width="wrap_content"
@@ -23,4 +51,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="3dp"
         android:layout_marginBottom="4dp" />
+
+
+
 </RelativeLayout>

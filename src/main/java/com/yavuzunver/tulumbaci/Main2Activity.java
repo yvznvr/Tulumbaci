@@ -1,9 +1,18 @@
 package com.yavuzunver.tulumbaci;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -15,103 +24,67 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-public class Main2Activity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
+public class Main2Activity extends AppCompatActivity implements LocationListener {
 
-    static final String TAG = Main2Activity.class.getSimpleName();
 
-    private JavaCameraView cameraView;
-
-    private Mat source;
-
-    private BaseLoaderCallback openCVLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-
-            switch (status) {
-
-                case LoaderCallbackInterface.SUCCESS:
-
-                    Log.i(TAG, "OpenCV loaded successfully");
-                    cameraView.enableView();
-                    cameraView.setVisibility(View.VISIBLE);
-                    break;
-
-                default:
-                    super.onManagerConnected(status);
-                    break;
-            }
-        }
-    };
+    LocationManager locationManager;
+    String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        cameraView = (org.opencv.android.JavaCameraView) findViewById(R.id.camera);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        cameraView.setVisibility(View.VISIBLE);
-        cameraView.setCvCameraViewListener(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (cameraView != null) {
-            cameraView.disableView();
+            return;
         }
-    }
+        Location location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            onLocationChanged(location);
+        }
 
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        if (!OpenCVLoader.initDebug()) {
-
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_3_0, this, openCVLoaderCallback);
-
-        } else {
-
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            openCVLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+            return;
         }
+        locationManager.requestLocationUpdates(provider, 500, 1, this);
+    }
+    protected void onPause(){
+        super.onPause();
+        locationManager.removeUpdates(this);
     }
 
     @Override
-    protected void onDestroy() {
+    public void onLocationChanged(Location location) { //enlem ve boylam bilgileri
+        double lat = location.getLatitude();
+        double log = location.getLongitude();
 
-        if (cameraView != null) {
-            cameraView.disableView();
-        }
-
-        super.onDestroy();
-    }
-
-    @Override
-    public void onCameraViewStarted(int width, int height) {
-
-        source = new Mat(height, width, CvType.CV_8UC4);
 
     }
 
     @Override
-    public void onCameraViewStopped() {
-
-        source.release();
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
 
     @Override
-    public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(this,"Enable Provider",Toast.LENGTH_SHORT).show();
+    }
 
-        source = inputFrame.rgba();
-
-        Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2GRAY);
-        Imgproc.blur(source, source, new Size(5., 5.));
-        Imgproc.Canny(source, source, 100, 20);
-
-        return source;
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(this,"Disable Provider",Toast.LENGTH_SHORT).show();
     }
 }
+
+
+
